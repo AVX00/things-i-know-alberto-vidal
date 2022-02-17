@@ -2,13 +2,16 @@ const chalk = require("chalk");
 const express = require("express");
 const morgan = require("morgan");
 const serverSays = require("debug")("things:server:");
+const options = require("../userOptions");
 const { notFound, generalError } = require("./middlewares/errors");
-const router = require("./routers/thingsRouter");
+const getRouter = require("./routers/thingsRouter");
 
 const app = express();
 
-const raiseServer = (port) =>
-  new Promise((resolve, reject) => {
+const raiseServer = async () => {
+  const { port, collection, permissions } = await options();
+
+  const serverUpPromise = new Promise((resolve, reject) => {
     const server = app.listen(port, () => {
       serverSays(`server listening at http://localhost:${port}`);
       resolve();
@@ -26,12 +29,13 @@ const raiseServer = (port) =>
     });
   });
 
-app.use(morgan("tiny"));
-app.use(express.json());
+  app.use(morgan("tiny"));
+  app.use(express.json());
+  app.use("/things", getRouter(permissions));
+  app.use(notFound);
+  app.use(generalError);
 
-app.use("/things", router);
-
-app.use(notFound);
-app.use(generalError);
+  return serverUpPromise;
+};
 
 module.exports = raiseServer;

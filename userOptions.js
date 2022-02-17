@@ -9,7 +9,7 @@ const options = () =>
       message: "Select a port in which start the server:",
     },
     {
-      name: "db",
+      name: "collection",
       type: "rawlist",
       message: "Select the data-base you want to connect to:",
       choices: ["test", "production"],
