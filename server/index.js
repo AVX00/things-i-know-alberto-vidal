@@ -1,4 +1,5 @@
 const express = require("express");
+const morgan = require("morgan");
 const serverSays = require("debug")("things:server:");
 
 const app = express();
@@ -21,5 +22,7 @@ const raiseServer = async (port) =>
       reject();
     });
   });
+
+app.use(morgan());
 
 module.exports = raiseServer;
