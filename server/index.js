@@ -1,7 +1,9 @@
+const chalk = require("chalk");
 const express = require("express");
 const morgan = require("morgan");
-const { notFound, generalError } = require("./middlewares/errors");
 const serverSays = require("debug")("things:server:");
+const { notFound, generalError } = require("./middlewares/errors");
+const router = require("./routers/thingsRouter");
 
 const app = express();
 
@@ -26,6 +28,8 @@ const raiseServer = (port) =>
 
 app.use(morgan("tiny"));
 app.use(express.json());
+
+app.use("/things", router);
 
 app.use(notFound);
 app.use(generalError);
