@@ -11,8 +11,10 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:idThing", async (req, res) => {
-  serverSays(chalk.blue(`${req.method} at /tihngs${req.url}`));
-  res.json({ things: "get by id" });
+  const id = req.params.idThing;
+  const foundThing = await Thing.find({ id });
+  res.status(200);
+  res.json(foundThing);
 });
 
 router.delete("/:idThing", async (req, res) => {
