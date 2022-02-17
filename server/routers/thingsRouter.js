@@ -21,8 +21,10 @@ router.delete("/:idThing", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  serverSays(chalk.blue(`${req.method} at /tihngs${req.url}`));
-  res.json({ things: "create thing" });
+  const thing = req.body;
+  const response = await Thing.create(thing);
+  res.status(201);
+  res.json(response);
 });
 
 router.put("/", async (req, res) => {
