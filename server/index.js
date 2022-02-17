@@ -1,13 +1,14 @@
 const express = require("express");
 const morgan = require("morgan");
+const { notFound, generalError } = require("./middlewares/errors");
 const serverSays = require("debug")("things:server:");
 
 const app = express();
 
-const raiseServer = async (port) =>
+const raiseServer = (port) =>
   new Promise((resolve, reject) => {
     const server = app.listen(port, () => {
-      serverSays(`server listening at ${port}`);
+      serverSays(`server listening at http://localhost:${port}`);
       resolve();
     });
 
@@ -23,6 +24,10 @@ const raiseServer = async (port) =>
     });
   });
 
-app.use(morgan());
+app.use(morgan("tiny"));
+app.use(express.json());
+
+app.use(notFound);
+app.use(generalError);
 
 module.exports = raiseServer;

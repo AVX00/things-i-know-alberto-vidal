@@ -5,5 +5,9 @@ const raiseServer = require("./server");
 const port = process.env.SERVER_PORT;
 
 (async () => {
-  await raiseServer(port);
+  try {
+    await raiseServer(port);
+  } catch (error) {
+    serverSays(error);
+  }
 })();
