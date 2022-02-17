@@ -16,8 +16,10 @@ router.get("/:idThing", async (req, res) => {
 });
 
 router.delete("/:idThing", async (req, res) => {
-  serverSays(chalk.blue(`${req.method} at /tihngs${req.url}`));
-  res.json({ things: "delete by id" });
+  const id = req.params.idThing;
+  const deletedThing = await Thing.findOneAndDelete({ id });
+  res.status(202);
+  res.json(deletedThing);
 });
 
 router.post("/", async (req, res) => {
