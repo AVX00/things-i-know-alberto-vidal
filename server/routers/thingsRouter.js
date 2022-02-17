@@ -1,12 +1,13 @@
 const chalk = require("chalk");
 const express = require("express");
 const serverSays = require("debug")("things:router:");
+const Thing = require("../../db/models/Things");
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  serverSays(chalk.blue(`${req.method} at /tihngs${req.url}`));
-  res.json({ things: "all things" });
+  const things = await Thing.find();
+  res.json(things);
 });
 
 router.get("/:idThing", async (req, res) => {
