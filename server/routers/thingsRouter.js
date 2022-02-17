@@ -1,6 +1,4 @@
-const chalk = require("chalk");
 const express = require("express");
-const serverSays = require("debug")("things:router:");
 const Thing = require("../../db/models/Things");
 
 const router = express.Router();
@@ -32,8 +30,11 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  serverSays(chalk.blue(`${req.method} at /tihngs${req.url}`));
-  res.json({ things: "modify thing" });
+  const thing = req.body;
+  // eslint-disable-next-line no-underscore-dangle
+  const response = await Thing.findByIdAndUpdate(thing._id, thing);
+  res.status(200);
+  res.json(response);
 });
 
 module.exports = router;
