@@ -2,15 +2,12 @@ const chalk = require("chalk");
 const express = require("express");
 const morgan = require("morgan");
 const serverSays = require("debug")("things:server:");
-const options = require("../userOptions");
 const { notFound, generalError } = require("./middlewares/errors");
 const getRouter = require("./routers/thingsRouter");
 
 const app = express();
 
-const raiseServer = async () => {
-  const { port, collection, permissions } = await options();
-
+const raiseServer = async (port, permissions) => {
   const serverUpPromise = new Promise((resolve, reject) => {
     const server = app.listen(port, () => {
       serverSays(`server listening at http://localhost:${port}`);
